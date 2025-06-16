@@ -1,0 +1,24 @@
+- name: mon tp 0
+  hosts: all
+  remote_user: root
+  become: true
+  become_user: root
+
+  tasks:
+   - name: install vim
+     apt: name=vim state=present
+   
+   - name: verifier si /etc/passwd exist
+     stat:
+       path: /etc/passwd
+     register: passwd_file
+   
+   - name: affiche true
+     debug:
+       msg: "le fichier /etc/passwd existe"
+     when: passwd_file.stat.exists
+
+   - name: affiche false
+     debug:
+       msg: "le fichier /etc/passwd n'existe pas"
+     when: not passwd_file.stat.exists
