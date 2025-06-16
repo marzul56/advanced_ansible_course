@@ -32,7 +32,6 @@
         src: template/msg.j2
         dest: /var/www/html/index.html
         mode: '0644'
-    notify: Restart apache
     when: "'apache2' in ansible_facts.packages"
   
 
