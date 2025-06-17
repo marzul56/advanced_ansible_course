@@ -1,0 +1,38 @@
+---
+- name: tp7 
+  hosts: localhost
+  remote_user: root
+  become: true
+  become_user: root
+
+  tasks :
+  
+    - name: Create temporary directory 
+      ansible.builtin.file:
+        path: ./filecsv
+        state: directory
+        mode: '0755'
+      
+
+    - name: Download File
+      ansible.builtin.get_url:
+        url: "https://github.com/MrMegaNova/advanced_ansible_course_16_06/blob/main/tp7/temperature.csv"
+        dest: "./filecsv/temperature.csv"
+
+    - name: read file
+      ansible.builtin.slurp:
+      src: ./filecsv/temperature.csv
+      register: file_content_b64
+    
+    - name: decode
+      set_fact:
+        contenu_csv: "{{file_content_b64 | b64decode}}"
+
+    - name: split par ligne_csv
+      set_fact:
+        lignes_csv: "{{contenu_csv.splitlines()}}"
+
+    - name: affiche
+      debug: 
+        msg: "{{item}}"
+      loop: "{{ligne_csv}}"
