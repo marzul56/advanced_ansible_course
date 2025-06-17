@@ -1,10 +1,4 @@
 ---
-- name: tp4
-  hosts: all
-  remote_user: root
-  become: true
-  become_user: root
-
   vars:
     docker_users:
       - ambient-user
