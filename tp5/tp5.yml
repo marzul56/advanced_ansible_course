@@ -1,0 +1,26 @@
+---
+- name: tp5 
+  hosts: all
+  remote_user: root
+  become: true
+  become_user: root
+
+
+
+  tasks:
+    
+    - name: Import tp4
+      ansible.builtin.include_tasks: tp4.yml
+
+    - name: Import tp3
+      ansible.builtin.include_tasks: tp3.yml
+    
+
+    
+    - name: Write date time in /etc/last_changed
+      ansible.builtin.lineinfile:
+        path: /etc/last_changed
+        line: "{{ ansible_date_time.date }} {{ ansible_date_time.date }}"
+        mode: '0644'
+        create: true
+      tags: datetime

@@ -1,9 +1,5 @@
-- name: tp3
-  hosts: all 
-  remote_user: root
-  become: true
-  become_user: root
-  vars:
+---
+ vars:
     html_root: /var/www/html
   tasks:
 
