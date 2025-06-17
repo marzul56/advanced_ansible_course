@@ -1,8 +1,5 @@
 ---
- vars:
-    html_root: /var/www/html
-  tasks:
-
+ 
   - name: Install softwares serveur 1 et 2 
     ansible.builtin.apt:
       name: "{{ item }}"
