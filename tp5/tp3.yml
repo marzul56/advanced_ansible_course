@@ -1,0 +1,75 @@
+- name: tp3
+  hosts: all 
+  remote_user: root
+  become: true
+  become_user: root
+  vars:
+    html_root: /var/www/html
+  tasks:
+
+  - name: Install softwares serveur 1 et 2 
+    ansible.builtin.apt:
+      name: "{{ item }}"
+      state: present
+      update_cache: yes
+    loop:
+      - apache2
+      - mysql-server
+    when: ansible_facts['nodename'] == "node01" or ansible_facts['nodename'] == "node02"
+
+  - name: Install serveur3
+    ansible.builtin.apt:
+      name: "{{ item }}"
+      state: present
+      update_cache: yes
+    loop:
+      - git
+      - nginx
+      - cowsay
+    when: ansible_facts['nodename'] == "node03"
+
+  - name: Install  si ubuntu
+    ansible.builtin.apt:
+      name: ufw
+      state: present
+      update_cache: yes
+    when: ansible_facts['os_family'] == "Ubuntu"
+
+  - name: check {{ html_root }}
+    ansible.builtin.file:
+      path: "{{ html_root }}" 
+      state: directory
+
+  - name: test the package 
+    ansible.builtin.package_facts:
+      manager: auto
+
+  - name: Copy index.html if apache2 is installed
+    ansible.builtin.template:
+        src: template/index.j2
+        dest: /var/www/html/index.html
+        mode: '0644'
+    when: "'apache2' in ansible_facts.packages"
+  
+
+
+  - name:  Apache start
+    ansible.builtin.service:
+      name: apache2
+      state: started
+      enabled: true
+    when: ansible_facts['nodename'] == "node01" or ansible_facts['nodename'] == "node02"
+
+  - name: Nginx start
+    ansible.builtin.service:
+      name: nginx
+      state: started
+      enabled: true
+    when: ansible_hostname == "node03"
+  
+  - name: Placer le jour pair ou impair
+    ansible.builtin.template:
+        src: template/jour.j2
+        dest: /etc/jour
+        mode: '0644'
+
