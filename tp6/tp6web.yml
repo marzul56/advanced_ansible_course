@@ -14,12 +14,23 @@
 
   tasks:
   
+    - name: Create wordpress directory
+      ansible.builtin.file:
+        path: /var/www/wordpress/
+        state: directory
+        recurse: true
 
     - name:  wordpress
       ansible.builtin.unarchive:
         src: https://fr.wordpress.org/wordpress-6.8.1-fr_FR.zip
         dest: /var/www/
         remote_src: true
-        creates: /var/www/
+        
+
+    - name: Configure wordpress wp-config.php
+      ansible.builtin.template:
+        src: template/wp-config.j2
+        dest: /var/www/wordpress/wp-config.php
+        mode: '0644'
 
     
