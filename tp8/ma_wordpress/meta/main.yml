@@ -1,0 +1,15 @@
+---
+galaxy_info:
+  author: ma
+  description: Install wordpress
+
+  license: MIT
+
+  min_ansible_version: "2.18.6"
+
+
+dependencies:
+  - role: geerlingguy.apache
+  - role: geerlingguy.php
+  - role: geerlingguy.apache-php-fpm
+  - role: geerlingguy.mysql
