@@ -45,7 +45,7 @@
           ici : {{ current_temp }}°C .......
           Il fait {{
             'plus froid' if current_temp < item.temperature else
-            ('plus chaud' if current_temp > item.temperature else 'pareil')
+            'plus chaud' if current_temp > item.temperature 
           }} ici !
       loop: "{{ data_csv_clean }}"
       register: res
@@ -54,3 +54,7 @@
     - name: Afficher les données 
       ansible.builtin.debug:
         var: res
+
+    - name: filtre py
+      debug:
+        msg: "{{ 'bonjour' |reverse_string }}"
