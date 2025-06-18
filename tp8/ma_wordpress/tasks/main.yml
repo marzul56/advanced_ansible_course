@@ -1,0 +1,34 @@
+
+- name: Installer php
+  include_role:
+    name: geerlingguy.php
+
+- name: Installer apache
+  include_role:
+    name: geerlingguy.apache
+
+- name: Installer apache-php
+  include_role:
+    name: geerlingguy.apache-php-fpm
+
+- name: Installer mysql
+  include_role:
+    name: geerlingguy.mysql
+
+- name: Create wordpress directory
+  ansible.builtin.file:
+        path: /var/www/wordpress/
+        state: directory
+        recurse: true
+
+- name: Download and unarchive wordpress
+  ansible.builtin.unarchive:
+        src: https://fr.wordpress.org/latest-fr_FR.zip
+        dest: /var/www/
+        remote_src: true
+
+- name: Configure wordpress wp-config.php
+  ansible.builtin.template:
+        src: template/wp-config.j2
+        dest: /var/www/wordpress/wp-config.php
+        mode: '0644'
