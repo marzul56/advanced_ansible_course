@@ -1,0 +1,11 @@
+---
+# Définir l'appel du rôle à tester et éventuellement les variables
+
+- name: Converge
+  hosts: all
+
+
+  tasks:
+    - name: "Include tp8"
+      ansible.builtin.include_role:
+        name: "ma.wordpress"

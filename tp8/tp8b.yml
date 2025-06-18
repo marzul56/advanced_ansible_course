@@ -1,0 +1,14 @@
+- name: Tp8-wordpress
+  hosts: node3
+  remote_user: root
+  become: true
+  become_user: root
+  tags: web
+
+  vars_files:
+    - vars/main.yml
+
+  tasks:
+    - name: Installer Wordpress
+      ansible.builtin.import_role:
+        name: ma_wo::rdpress
