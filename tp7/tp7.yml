@@ -33,3 +33,24 @@
     - name: Afficher openmeteo
       ansible.builtin.debug:
         var: openmeteo_data
+    
+    - name: Extraire la température actuelle de l'API
+      ansible.builtin.set_fact:
+        current_temp: "{{ (openmeteo_data.json.hourly.temperature_2m | first) | round(1) | float }}"
+
+    - name: Afficher les données  de l'API
+      ansible.builtin.debug:
+        msg: >
+          Là-bas : {{ item.temperature }}°C VS
+          ici : {{ current_temp }}°C .......
+          Il fait {{
+            'plus froid' if current_temp < item.temperature else
+            ('plus chaud' if current_temp > item.temperature else 'pareil')
+          }} ici !
+      loop: "{{ data_csv_clean }}"
+      register: res
+
+
+    - name: Afficher les données 
+      ansible.builtin.debug:
+        var: res
